@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import GameHud from '@/components/mc/GameHud.vue'
 import GameWorld from '@/components/mc/GameWorld.vue'
 import { Toaster } from '@/components/ui/sonner'
+import { dirtTextureUrl } from '@/game/blocks'
 import { game } from '@/game/state'
 import { useAppStore } from '@/stores/app'
 import { useNodesStore } from '@/stores/nodes'
@@ -19,7 +20,6 @@ const router = useRouter()
 const buildVersion = __BUILD_VERSION__
 
 const sitename = computed(() => appStore.publicSettings?.sitename || 'Komari Monitor')
-const showAdmin = computed(() => appStore.isLoggedIn || !appStore.hideAdminEntryWhenLoggedOut)
 const isHome = computed(() => route.name === 'home')
 
 watchEffect(() => {
@@ -27,11 +27,10 @@ watchEffect(() => {
   const online = nodesStore.nodes.filter(node => node.online).length
   document.title = total > 0 ? `${sitename.value} · ${online}/${total} 在线` : sitename.value
 })
-function openAdmin() {
-  location.href = appStore.isLoggedIn ? '/admin/dashboard' : '/admin/login'
-}
 
 onMounted(async () => {
+  // 菜单的泥土背景和图标都来自程序生成的贴图
+  document.documentElement.style.setProperty('--mc-dirt', `url(${dirtTextureUrl()})`)
   try {
     await initApp()
   }
@@ -51,13 +50,9 @@ onUnmounted(() => destroyInitManager())
     <LoadingCover v-if="appStore.loading" />
     <GameHud v-if="game.playing" />
     <template v-if="!game.playing">
-      <nav class="mc-topbar">
-        <button v-if="!isHome" type="button" class="mc-button mc-button-small" @click="router.push('/')">
-          返回服务器列表
-        </button>
-        <span class="flex-1" />
-        <button v-if="showAdmin" type="button" class="mc-button mc-button-small" @click="openAdmin">
-          {{ appStore.isLoggedIn ? '后台管理' : '登录' }}
+      <nav v-if="!isHome" class="mc-topbar">
+        <button type="button" class="mc-button mc-button-small" @click="router.push('/')">
+          返回
         </button>
       </nav>
       <ConnectionBanner />

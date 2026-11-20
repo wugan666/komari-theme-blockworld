@@ -30,7 +30,7 @@ function towerNodes(): TowerNode[] {
 }
 async function start() {
   const { createEngine } = await import('@/game/engine')
-  return createEngine(canvas.value!, appStore.worldSeed, appStore.worldNight)
+  return createEngine(canvas.value!, appStore.worldSeed, appStore.worldTime)
 }
 
 onMounted(async () => {

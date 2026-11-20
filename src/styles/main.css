@@ -252,3 +252,67 @@
 .mc-button, .mc-tab, .mc-heading, .mc-title, .mc-splash, .mc-server-name, .mc-chest-title, .mc-chest-key, .mc-level, .mc-hotbar-name, .mc-footer, .mc-debug div:first-child {
   font-family: var(--font-pixel);
 }
+
+/* ===== 1.2：标题画面 / 多人游戏 / 选项 / 暂停 / 物品栏 ===== */
+.mc-screen { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.875rem; min-height: calc(100vh - 2.5rem); padding: 1.25rem 0.75rem 1rem; }
+.mc-title-screen { justify-content: flex-start; padding-top: 9vh; }
+.mc-pause { justify-content: center; background: rgba(0, 0, 0, 0.45); }
+.mc-dirt { background-image: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)), var(--mc-dirt); background-size: auto, 64px 64px; image-rendering: pixelated; }
+.mc-screen-title { color: #fff; font-family: var(--font-pixel); font-size: 1.375rem; text-shadow: 2px 2px 0 #3a3a3a; }
+.mc-title h1 { animation: mc-float 5s ease-in-out infinite; }
+@keyframes mc-float { 50% { transform: translateY(-5px); } }
+.mc-stack { display: flex; flex-direction: column; gap: 0.625rem; width: min(25rem, 100%); margin-top: 2.5rem; }
+.mc-pause .mc-stack { margin-top: 0.5rem; }
+.mc-stack-row { display: flex; gap: 0.625rem; }
+.mc-stack-row .mc-button { flex: 1; min-width: 0; }
+.mc-button-wide { width: 100%; }
+.mc-button { transition: background-color 0.08s, transform 0.08s; }
+.mc-button:active:not(:disabled) { transform: translateY(1px); }
+.mc-screen .mc-panel { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.mc-screen .mc-list { flex: 1; max-height: none; min-height: 12rem; }
+.mc-screen > .mc-actions { width: min(52rem, 100%); border: 0; background: transparent; padding: 0; }
+.mc-screen .mc-status { width: min(52rem, 100%); }
+.mc-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.625rem; width: min(40rem, 100%); margin: 1rem 0; }
+.mc-options .mc-button, .mc-slider { width: 100%; min-width: 0; }
+@media (max-width: 560px) { .mc-options { grid-template-columns: 1fr; } }
+.mc-slider { position: relative; height: 2.5rem; border: 2px solid #000; background: #2a2a2a; box-shadow: inset 2px 2px 0 #111, inset -2px -2px 0 #4a4a4a; cursor: ew-resize; touch-action: none; user-select: none; }
+.mc-slider i { position: absolute; top: 0; bottom: 0; width: 16px; background: #8a8a8a; box-shadow: inset 2px 2px 0 #c6c6c6, inset -2px -2px 0 #555; }
+.mc-slider span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-pixel); text-shadow: 2px 2px 0 #3a3a3a; pointer-events: none; }
+.mc-slider:hover i { background: #7c86be; box-shadow: inset 2px 2px 0 #bdc6ff, inset -2px -2px 0 #4d5694; }
+.mc-slider:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.mc-inventory { width: min(31rem, 100%); }
+.mc-chest-title small { margin-left: 0.5rem; font-family: var(--font-sans); font-size: 0.75rem; color: #5a5a5a; }
+.mc-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 2px; margin: 0 0.75rem 0.5rem; }
+.mc-item { position: relative; aspect-ratio: 1; background: #8b8b8b; box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff; }
+.mc-item i { position: absolute; inset: 14%; background-size: 100% 100%; image-rendering: pixelated; transition: transform 0.1s; }
+.mc-item:hover { background: #c5c5d8; }
+.mc-item:hover i { transform: scale(1.18); }
+.mc-item:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.mc-item-active { box-shadow: 0 0 0 2px #fff, inset 2px 2px 0 #373737, inset -2px -2px 0 #fff; z-index: 1; }
+
+/* 界面切换与列表动画 */
+.mc-screen-enter-active, .mc-screen-leave-active { transition: opacity 0.18s ease, transform 0.18s ease; }
+.mc-screen-enter-from { opacity: 0; transform: scale(0.985); }
+.mc-screen-leave-to { opacity: 0; }
+.mc-row-enter-active, .mc-row-leave-active, .mc-row-move { transition: opacity 0.2s, transform 0.25s; }
+.mc-row-enter-from, .mc-row-leave-to { opacity: 0; transform: translateX(-10px); }
+.mc-row-leave-active { position: absolute; }
+.mc-chest { animation: mc-pop 0.16s ease-out; }
+@keyframes mc-pop { from { transform: scale(0.94); opacity: 0; } }
+
+/* 游戏内 HUD */
+.mc-slot i { background-size: 100% 100%; animation: mc-slot-in 0.2s ease-out; }
+@keyframes mc-slot-in { from { transform: scale(0.5); } }
+.mc-slot { transition: transform 0.1s; }
+.mc-slot-active { transform: scale(1.1); }
+.mc-hotbar-name { font-family: var(--font-pixel); }
+.mc-item-name-enter-active { transition: opacity 0.15s, transform 0.15s; }
+.mc-item-name-leave-active { transition: opacity 0.6s; }
+.mc-item-name-enter-from { opacity: 0; transform: translate(-50%, 6px); }
+.mc-item-name-leave-to { opacity: 0; }
+.mc-tip-enter-active, .mc-tip-leave-active { transition: opacity 0.15s; }
+.mc-tip-enter-from, .mc-tip-leave-to { opacity: 0; }
+.mc-hud { animation: mc-hud-in 0.5s ease-out; }
+@keyframes mc-hud-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .mc-title h1, .mc-chest, .mc-hud, .mc-slot i { animation: none; } }

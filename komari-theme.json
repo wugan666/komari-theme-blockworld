@@ -1,7 +1,7 @@
 {
   "name": "Blockworld",
   "short": "blockworld",
-  "description": "方块世界主题：可以走进去的 3D 方块世界，每台服务器是一座信标塔；界面为方块游戏的多人游戏列表风格",
+  "description": "方块世界主题：可以走进去的无限 3D 方块世界，每台服务器是一座信标塔；界面仿方块游戏的标题画面与多人游戏列表",
   "version": "1.1.1",
   "author": "wugan666",
   "url": "https://github.com/wugan666/komari-theme-blockworld",
@@ -44,9 +44,9 @@
         "key": "worldTime",
         "name": "世界时间",
         "type": "select",
-        "default": "day",
-        "options": "day,night",
-        "help": "day 白天，night 夜晚（带星空，信标光柱更明显）"
+        "default": "cycle",
+        "options": "cycle,day,night",
+        "help": "cycle 昼夜交替（一整天约 10 分钟），day 固定白天，night 固定夜晚。访客可以在游戏的“选项”里自行覆盖"
       },
       {
         "key": "worldSeed",

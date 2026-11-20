@@ -241,7 +241,10 @@ const useAppStore = defineStore('app', () => {
 
   // ===== 方块世界 =====
   const enableWorld = themeSwitch('enableWorld', true)
-  const worldNight = computed<boolean>(() => publicSettings.value?.theme_settings?.worldTime === 'night')
+  const worldTime = computed<'cycle' | 'day' | 'night'>(() => {
+    const value = publicSettings.value?.theme_settings?.worldTime
+    return value === 'day' || value === 'night' ? value : 'cycle'
+  })
   const worldSeed = computed<number>(() => {
     const value = Number(publicSettings.value?.theme_settings?.worldSeed)
     return Number.isFinite(value) && value > 0 ? Math.floor(value) : 20261120
@@ -474,7 +477,7 @@ const useAppStore = defineStore('app', () => {
     showNodeConnections,
     showNodeUptime,
     enableWorld,
-    worldNight,
+    worldTime,
     worldSeed,
     compactOfflineNodes,
     showCarrierLatency,
