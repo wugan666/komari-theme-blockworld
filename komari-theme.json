@@ -1,0 +1,71 @@
+{
+  "name": "Blockworld",
+  "short": "blockworld",
+  "description": "方块世界主题：可以走进去的 3D 方块世界，每台服务器是一座信标塔；界面为方块游戏的多人游戏列表风格",
+  "version": "0.0.0",
+  "author": "wugan666",
+  "url": "https://github.com/wugan666/komari-theme-blockworld",
+  "preview": "preview.png",
+  "configuration": {
+    "type": "managed",
+    "name": "方块世界设置",
+    "data": [
+      {
+        "name": "基础设置",
+        "type": "title"
+      },
+      {
+        "key": "dataUpdateInterval",
+        "name": "数据更新间隔",
+        "type": "number",
+        "default": 3,
+        "help": "实时数据刷新间隔，单位：秒（建议 1-10 秒）"
+      },
+      {
+        "key": "rpcTransportMode",
+        "name": "RPC 连接模式",
+        "type": "select",
+        "default": "websocket",
+        "options": "websocket,http",
+        "help": "推荐 websocket，无法使用时选择 http"
+      },
+      {
+        "name": "世界",
+        "type": "title"
+      },
+      {
+        "key": "enableWorld",
+        "name": "启用 3D 世界",
+        "type": "switch",
+        "default": true,
+        "help": "关闭后只显示界面，不加载 3D 世界（访客设备较弱时可关闭）"
+      },
+      {
+        "key": "worldTime",
+        "name": "世界时间",
+        "type": "select",
+        "default": "day",
+        "options": "day,night",
+        "help": "day 白天，night 夜晚（带星空，信标光柱更明显）"
+      },
+      {
+        "key": "worldSeed",
+        "name": "世界种子",
+        "type": "number",
+        "default": 20261120,
+        "help": "决定地形的数字，换一个数字就是一个新世界。更换后访客之前搭建的方块会被清空"
+      },
+      {
+        "name": "其他",
+        "type": "title"
+      },
+      {
+        "key": "hideAdminEntryWhenLoggedOut",
+        "name": "隐藏后台入口",
+        "type": "switch",
+        "default": false,
+        "help": "未登录时隐藏后台管理入口"
+      }
+    ]
+  }
+}
