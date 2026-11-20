@@ -317,6 +317,70 @@
 @keyframes mc-hud-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .mc-title h1, .mc-chest, .mc-hud, .mc-slot i { animation: none; } }
 
+/* ===== 1.2：标题画面 / 多人游戏 / 选项 / 暂停 / 物品栏 ===== */
+.mc-screen { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.875rem; min-height: calc(100vh - 2.5rem); padding: 1.25rem 0.75rem 1rem; }
+.mc-title-screen { justify-content: flex-start; padding-top: 9vh; }
+.mc-pause { justify-content: center; background: rgba(0, 0, 0, 0.45); }
+.mc-dirt { background-image: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)), var(--mc-dirt); background-size: auto, 64px 64px; image-rendering: pixelated; }
+.mc-screen-title { color: #fff; font-family: var(--font-pixel); font-size: 1.375rem; text-shadow: 2px 2px 0 #3a3a3a; }
+.mc-title h1 { animation: mc-float 5s ease-in-out infinite; }
+@keyframes mc-float { 50% { transform: translateY(-5px); } }
+.mc-stack { display: flex; flex-direction: column; gap: 0.625rem; width: min(25rem, 100%); margin-top: 2.5rem; }
+.mc-pause .mc-stack { margin-top: 0.5rem; }
+.mc-stack-row { display: flex; gap: 0.625rem; }
+.mc-stack-row .mc-button { flex: 1; min-width: 0; }
+.mc-button-wide { width: 100%; }
+.mc-button { transition: background-color 0.08s, transform 0.08s; }
+.mc-button:active:not(:disabled) { transform: translateY(1px); }
+.mc-screen .mc-panel { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.mc-screen .mc-list { flex: 1; max-height: none; min-height: 12rem; }
+.mc-screen > .mc-actions { width: min(52rem, 100%); border: 0; background: transparent; padding: 0; }
+.mc-screen .mc-status { width: min(52rem, 100%); }
+.mc-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.625rem; width: min(40rem, 100%); margin: 1rem 0; }
+.mc-options .mc-button, .mc-slider { width: 100%; min-width: 0; }
+@media (max-width: 560px) { .mc-options { grid-template-columns: 1fr; } }
+.mc-slider { position: relative; height: 2.5rem; border: 2px solid #000; background: #2a2a2a; box-shadow: inset 2px 2px 0 #111, inset -2px -2px 0 #4a4a4a; cursor: ew-resize; touch-action: none; user-select: none; }
+.mc-slider i { position: absolute; top: 0; bottom: 0; width: 16px; background: #8a8a8a; box-shadow: inset 2px 2px 0 #c6c6c6, inset -2px -2px 0 #555; }
+.mc-slider span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-pixel); text-shadow: 2px 2px 0 #3a3a3a; pointer-events: none; }
+.mc-slider:hover i { background: #7c86be; box-shadow: inset 2px 2px 0 #bdc6ff, inset -2px -2px 0 #4d5694; }
+.mc-slider:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.mc-inventory { width: min(31rem, 100%); }
+.mc-chest-title small { margin-left: 0.5rem; font-family: var(--font-sans); font-size: 0.75rem; color: #5a5a5a; }
+.mc-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 2px; margin: 0 0.75rem 0.5rem; }
+.mc-item { position: relative; aspect-ratio: 1; background: #8b8b8b; box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff; }
+.mc-item i { position: absolute; inset: 14%; background-size: 100% 100%; image-rendering: pixelated; transition: transform 0.1s; }
+.mc-item:hover { background: #c5c5d8; }
+.mc-item:hover i { transform: scale(1.18); }
+.mc-item:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.mc-item-active { box-shadow: 0 0 0 2px #fff, inset 2px 2px 0 #373737, inset -2px -2px 0 #fff; z-index: 1; }
+
+/* 界面切换与列表动画 */
+.mc-screen-enter-active, .mc-screen-leave-active { transition: opacity 0.18s ease, transform 0.18s ease; }
+.mc-screen-enter-from { opacity: 0; transform: scale(0.985); }
+.mc-screen-leave-to { opacity: 0; }
+.mc-row-enter-active, .mc-row-leave-active, .mc-row-move { transition: opacity 0.2s, transform 0.25s; }
+.mc-row-enter-from, .mc-row-leave-to { opacity: 0; transform: translateX(-10px); }
+.mc-row-leave-active { position: absolute; }
+.mc-chest { animation: mc-pop 0.16s ease-out; }
+@keyframes mc-pop { from { transform: scale(0.94); opacity: 0; } }
+
+/* 游戏内 HUD */
+.mc-slot i { background-size: 100% 100%; animation: mc-slot-in 0.2s ease-out; }
+@keyframes mc-slot-in { from { transform: scale(0.5); } }
+.mc-slot { transition: transform 0.1s; }
+.mc-slot-active { transform: scale(1.1); }
+.mc-hotbar-name { font-family: var(--font-pixel); }
+.mc-item-name-enter-active { transition: opacity 0.15s, transform 0.15s; }
+.mc-item-name-leave-active { transition: opacity 0.6s; }
+.mc-item-name-enter-from { opacity: 0; transform: translate(-50%, 6px); }
+.mc-item-name-leave-to { opacity: 0; }
+.mc-tip-enter-active, .mc-tip-leave-active { transition: opacity 0.15s; }
+.mc-tip-enter-from, .mc-tip-leave-to { opacity: 0; }
+.mc-hud { animation: mc-hud-in 0.5s ease-out; }
+@keyframes mc-hud-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .mc-title h1, .mc-chest, .mc-hud, .mc-slot i { animation: none; } }
+
 /* ===== 节点详情页的可读性 ===== */
 .instance-detail { padding: 0.75rem 0.75rem 0; font-size: 0.875rem; }
 .instance-detail .text-\[10px\], .instance-detail .text-\[11px\] { font-size: 0.75rem; line-height: 1.45; }
@@ -325,5 +389,42 @@
 .instance-detail .glass-surface, .instance-detail .bg-card { background-color: rgba(24, 22, 20, 0.96); border: 2px solid #000; box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.08); }
 .instance-detail .bg-muted\/50, .instance-detail .bg-muted\/40, .instance-detail .bg-muted { background-color: #2c2a28; }
 .instance-detail h1, .instance-detail h2, .instance-detail h3 { font-family: var(--font-pixel); }
-.instance-detail [role='tab'] { color: rgba(255, 255, 255, 0.74); }
-.instance-detail [role='tab'][data-state='active'] { color: #fff; }
+
+/* ===== 节点详情页：游戏界面版式 ===== */
+.mc-detail { gap: 0.75rem; }
+.mc-detail-head { display: flex; align-items: center; gap: 0.875rem; width: min(64rem, 100%); }
+.mc-detail-head h1 { color: #fff; font-family: var(--font-pixel); font-size: 1.5rem; line-height: 1.2; text-shadow: 2px 2px 0 #3a3a3a; overflow-wrap: anywhere; }
+.mc-detail-head p { font-size: 0.875rem; }
+.mc-bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.625rem 1.25rem; width: min(64rem, 100%); }
+.mc-boss-label { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.1875rem; color: #fff; font-size: 0.8125rem; text-shadow: 1px 1px 0 #3a3a3a; }
+.mc-boss-label span:first-child { font-family: var(--font-pixel); }
+.mc-boss-label span:last-child { font-variant-numeric: tabular-nums; }
+/* 血条：黑边、深色底、每 10% 一道刻痕 */
+.mc-boss-bar { position: relative; height: 0.75rem; border: 2px solid #000; background: #2a2a2a; }
+.mc-boss-bar i { display: block; height: 100%; transition: width 0.5s ease, background-color 0.3s; box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.3); }
+.mc-boss-bar::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), rgba(0, 0, 0, 0.55) calc(10% - 2px) 10%); }
+.mc-boss-bar[data-color='green'] i { background: #3fcf5a; }
+.mc-boss-bar[data-color='yellow'] i { background: #e6c229; }
+.mc-boss-bar[data-color='red'] i { background: #e2452f; }
+.mc-detail-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+.mc-detail-tabs .mc-button { min-width: 7rem; }
+.mc-detail-body { width: min(64rem, 100%); flex: 1; }
+.mc-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.875rem; align-items: start; }
+@media (max-width: 720px) { .mc-detail-grid { grid-template-columns: minmax(0, 1fr); } }
+.mc-detail-grid .mc-chest { width: 100%; animation: none; }
+.mc-detail .mc-chest-value { overflow-wrap: anywhere; }
+.mc-detail-panel { width: 100%; padding: 0.875rem; }
+.mc-detail > .mc-actions { width: min(64rem, 100%); border: 0; background: transparent; padding: 0; }
+
+/* 图表组件放进游戏界面后：方角、黑边、凹陷的格子 */
+.mc-detail .glass-surface { background-color: rgba(0, 0, 0, 0.42); border: 2px solid #000; border-radius: 0; box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.07); }
+.mc-detail .text-xs, .mc-detail .text-\[11px\], .mc-detail .text-\[10px\] { font-size: 0.78125rem; line-height: 1.45; }
+.mc-detail .text-muted-foreground { color: #cfcfcf; }
+.mc-detail .rounded-lg, .mc-detail .rounded-md, .mc-detail .rounded, .mc-detail .rounded-sm, .mc-detail .rounded-xl { border-radius: 0; }
+.mc-detail-panel [role='tablist'] { background-color: #000; padding: 2px; }
+.mc-detail-panel [role='tab'] { color: #cfcfcf; }
+.mc-detail-panel [role='tab'][data-state='active'] { background: #6f6f6f; box-shadow: inset 2px 2px 0 #aaa, inset -2px -2px 0 #4a4a4a; color: #ffffa0 !important; }
+.mc-detail .bg-muted\/50, .mc-detail .bg-muted\/40, .mc-detail .bg-muted { background-color: #2c2a28; }
+.mc-detail-panel input, .mc-detail-panel select { border: 2px solid #a0a0a0; background-color: #000; color: #fff; border-radius: 0; }
+.mc-detail .text-green-600 { color: #7dff9b !important; }
+.mc-detail-panel .text-base { font-family: var(--font-pixel); }

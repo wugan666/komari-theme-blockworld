@@ -50,11 +50,6 @@ onUnmounted(() => destroyInitManager())
     <LoadingCover v-if="appStore.loading" />
     <GameHud v-if="game.playing" />
     <template v-if="!game.playing">
-      <nav v-if="!isHome" class="mc-topbar">
-        <button type="button" class="mc-button mc-button-small" @click="router.push('/')">
-          返回
-        </button>
-      </nav>
       <ConnectionBanner />
       <main v-if="!appStore.loading" class="relative z-10">
         <RouterView v-slot="{ Component }">
