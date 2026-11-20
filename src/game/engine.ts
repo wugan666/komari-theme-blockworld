@@ -86,6 +86,16 @@ export function createEngine(canvas: HTMLCanvasElement, seed: number, night: boo
     scene.add(new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1.6, sizeAttenuation: false, fog: false })))
   }
 
+  // drifting clouds: flat white slabs high above the terrain
+  const clouds = new THREE.Group()
+  const cloudMaterial = new THREE.MeshBasicMaterial({ color: night ? 0x3A4468 : 0xFFFFFF, transparent: true, opacity: night ? 0.55 : 0.9, fog: false })
+  for (let i = 0; i < 14; i++) {
+    const cloud = new THREE.Mesh(new THREE.BoxGeometry(8 + Math.random() * 14, 1.2, 5 + Math.random() * 8), cloudMaterial)
+    cloud.position.set(Math.random() * 260 - 80, 44 + Math.random() * 6, Math.random() * 260 - 80)
+    clouds.add(cloud)
+  }
+  scene.add(clouds)
+
   // ===== world =====
   let world = new World(seed, 22)
   const chunksX = WORLD_X / CHUNK
@@ -543,6 +553,22 @@ export function createEngine(canvas: HTMLCanvasElement, seed: number, night: boo
       camera.position.set(CENTER_X + Math.cos(orbit) * radius, PLAZA_Y + 17, CENTER_Z + Math.sin(orbit) * radius)
       camera.lookAt(CENTER_X, PLAZA_Y + 4, CENTER_Z)
       outline.visible = false
+    }
+    for (const cloud of clouds.children) {
+      cloud.position.x += dt * 0.9
+      if (cloud.position.x > 190)
+        cloud.position.x = -90
+    }
+    // name plates: near ones while playing; in the panorama only the server picked in the list
+    const pulse = 1.9 + Math.sin(now / 260) * 0.5
+    for (const tower of towers) {
+      const selected = tower.node.uuid === game.selectedNode
+      tower.label.visible = game.playing
+        ? Math.hypot(tower.x - camera.position.x, tower.z - camera.position.z) < 22
+        : selected
+      const scale = selected ? pulse : 1
+      tower.glow.scale.set(scale, 1, scale)
+      tower.label.scale.set(game.playing ? 3.4 : 9, game.playing ? 0.96 : 2.54, 1)
     }
     renderer.render(scene, camera)
     game.ready = true

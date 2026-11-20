@@ -84,6 +84,10 @@ function resetWorld() {
   controls.resetWorld()
   window.$message?.success('世界已重置，你搭建的方块已清空')
 }
+// 列表里选中的服务器，在世界里高亮它的信标塔
+watch(selected, (uuid) => {
+  game.selectedNode = uuid
+})
 // 在世界里右键信标塔时选中对应的节点
 watch(() => game.openedNode, (uuid) => {
   if (uuid)

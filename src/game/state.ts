@@ -14,6 +14,8 @@ export const game = reactive({
   targetNode: null as string | null,
   /** block name under the crosshair */
   targetBlock: '',
+  /** node picked in the server list; its tower is highlighted in the world */
+  selectedNode: null as string | null,
   /** node opened from inside the world (right click on its tower) */
   openedNode: null as string | null,
   flying: false,
