@@ -2,7 +2,7 @@
   "name": "Blockworld",
   "short": "blockworld",
   "description": "方块世界主题：可以走进去的 3D 方块世界，每台服务器是一座信标塔；界面为方块游戏的多人游戏列表风格",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "wugan666",
   "url": "https://github.com/wugan666/komari-theme-blockworld",
   "preview": "preview.png",
